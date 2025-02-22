@@ -4,8 +4,6 @@ from flask import Flask, request, jsonify
 import pyodbc
 import json
 
-sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
-
 from config import DefaultConfig
 configParams = DefaultConfig()
 

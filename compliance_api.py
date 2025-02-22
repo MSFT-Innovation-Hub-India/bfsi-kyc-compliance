@@ -70,7 +70,7 @@ def compliance_check():
 @app.route('/', methods=['GET'])
 @app.route('/swagger.json', methods=['GET'])
 def swagger_spec():
-    spec_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "swagger.json")
+    spec_path = "swagger.json"
     with open(spec_path, "r") as f:
         spec = json.load(f)
     return jsonify(spec)

@@ -1,0 +1,142 @@
+
+{
+    "openapi": "3.0.0",
+    "info": {
+      "description": "API for KYC and Compliance Checks",
+      "version": "1.0.0",
+      "title": "KYC and Compliance API"
+    },
+    "servers": [
+      {
+        "url": "http://localhost"
+      }
+    ],
+    "auth": [],
+    "paths": {
+      "/kyc": {
+        "post": {
+          "operationId": "performKycValidation",
+          "summary": "Perform KYC Validation",
+          "tags": [
+                    "ExecuteFunction"
+                ],
+          "description": "Validates the KYC details of a customer.",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomerDetails"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "KYC validation successful",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/KYCResponse"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Invalid input"
+            }
+          }
+        }
+      },
+      "/compliance": {
+        "post": {
+          "operationId": "performComplianceCheck",
+          "summary": "Perform Compliance Check",
+          "tags": [
+                    "ExecuteFunction"
+                ],
+          "description": "Checks compliance based on customer details.",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ComplianceDetails"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Compliance check successful",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ComplianceResponse"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Invalid input"
+            }
+          }
+        }
+      }
+    },
+    "components": {
+      "schemas": {
+        "CustomerDetails": {
+          "type": "object",
+          "properties": {
+            "customerId": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "dob": {
+              "type": "string",
+              "format": "date"
+            },
+            "address": {
+              "type": "string"
+            }
+          }
+        },
+        "KYCResponse": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string"
+            },
+            "message": {
+              "type": "string"
+            }
+          }
+        },
+        "ComplianceDetails": {
+          "type": "object",
+          "properties": {
+            "customerId": {
+              "type": "string"
+            },
+            "complianceType": {
+              "type": "string"
+            }
+          }
+        },
+        "ComplianceResponse": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string"
+            },
+            "message": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  }

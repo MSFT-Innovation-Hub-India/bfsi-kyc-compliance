@@ -68,7 +68,6 @@ def compliance_check():
     return jsonify(response)
 
 @app.route('/', methods=['GET'])
-@app.route('/swagger.json', methods=['GET'])
 def swagger_spec():
     spec_path = "swagger.json"
     with open(spec_path, "r") as f:

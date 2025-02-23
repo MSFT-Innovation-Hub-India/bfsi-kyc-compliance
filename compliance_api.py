@@ -74,5 +74,6 @@ def swagger_spec():
         spec = json.load(f)
     return jsonify(spec)
 
-if __name__ == '__main__':
-    app.run(debug=True)
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 5000))  # Use Azure's PORT environment variable
+    app.run(host="0.0.0.0", port=port)

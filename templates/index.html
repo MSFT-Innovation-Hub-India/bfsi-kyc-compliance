@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KYC Compliance Portal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0078D4 0%, #005A9E 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            max-width: 600px;
+            width: 100%;
+            padding: 40px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #0078D4;
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #605E5C;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #323130;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .form-group input[type="text"] {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #EDEBE9;
+            border-radius: 4px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .form-group input[type="text"]:focus {
+            outline: none;
+            border-color: #0078D4;
+        }
+
+        .file-upload-wrapper {
+            position: relative;
+            border: 2px dashed #0078D4;
+            border-radius: 4px;
+            padding: 30px 20px;
+            text-align: center;
+            background-color: #F3F2F1;
+            transition: background-color 0.3s ease;
+            cursor: pointer;
+        }
+
+        .file-upload-wrapper:hover {
+            background-color: #E1DFDD;
+        }
+
+        .file-upload-wrapper input[type="file"] {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .upload-icon {
+            color: #0078D4;
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+
+        .upload-text {
+            color: #323130;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .upload-subtext {
+            color: #605E5C;
+            font-size: 12px;
+        }
+
+        .file-name {
+            margin-top: 10px;
+            color: #107C10;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            background-color: #0078D4;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 30px;
+        }
+
+        .submit-btn:hover {
+            background-color: #005A9E;
+        }
+
+        .submit-btn:active {
+            background-color: #004578;
+        }
+
+        .submit-btn:disabled {
+            background-color: #A19F9D;
+            cursor: not-allowed;
+        }
+
+        .message {
+            padding: 12px 16px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            display: none;
+        }
+
+        .message.success {
+            background-color: #DFF6DD;
+            color: #107C10;
+            border: 1px solid #107C10;
+        }
+
+        .message.error {
+            background-color: #FDE7E9;
+            color: #A80000;
+            border: 1px solid #A80000;
+        }
+
+        .message.show {
+            display: block;
+        }
+
+        .helper-text {
+            color: #605E5C;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: #EDEBE9;
+            margin: 30px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>KYC Compliance Portal</h1>
+            <p>Please provide your identity documents for verification</p>
+        </div>
+
+        <div id="message" class="message"></div>
+
+        <form id="kycForm" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="aadharNumber">Aadhar Number *</label>
+                <input 
+                    type="text" 
+                    id="aadharNumber" 
+                    name="aadharNumber" 
+                    placeholder="Enter 12-digit Aadhar number"
+                    maxlength="12"
+                    required
+                >
+                <div class="helper-text">Format: XXXX XXXX XXXX (12 digits)</div>
+            </div>
+
+            <div class="form-group">
+                <label for="aadharFile">Upload Aadhar Document *</label>
+                <div class="file-upload-wrapper">
+                    <input 
+                        type="file" 
+                        id="aadharFile" 
+                        name="aadharFile" 
+                        accept=".pdf,.jpg,.jpeg,.png"
+                        required
+                    >
+                    <div class="upload-icon">📄</div>
+                    <div class="upload-text">Click to upload Aadhar document</div>
+                    <div class="upload-subtext">PDF, JPG, JPEG or PNG (Max 5MB)</div>
+                    <div id="aadharFileName" class="file-name"></div>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="form-group">
+                <label for="panNumber">PAN Number *</label>
+                <input 
+                    type="text" 
+                    id="panNumber" 
+                    name="panNumber" 
+                    placeholder="Enter PAN number"
+                    maxlength="10"
+                    style="text-transform: uppercase;"
+                    required
+                >
+                <div class="helper-text">Format: XXXXX0000X (10 characters)</div>
+            </div>
+
+            <div class="form-group">
+                <label for="panFile">Upload PAN Document *</label>
+                <div class="file-upload-wrapper">
+                    <input 
+                        type="file" 
+                        id="panFile" 
+                        name="panFile" 
+                        accept=".pdf,.jpg,.jpeg,.png"
+                        required
+                    >
+                    <div class="upload-icon">📄</div>
+                    <div class="upload-text">Click to upload PAN document</div>
+                    <div class="upload-subtext">PDF, JPG, JPEG or PNG (Max 5MB)</div>
+                    <div id="panFileName" class="file-name"></div>
+                </div>
+            </div>
+
+            <button type="submit" class="submit-btn" id="submitBtn">
+                Submit KYC Documents
+            </button>
+        </form>
+    </div>
+
+    <script>
+        // File upload handlers
+        document.getElementById('aadharFile').addEventListener('change', function(e) {
+            const fileName = e.target.files[0]?.name;
+            const fileNameElement = document.getElementById('aadharFileName');
+            if (fileName) {
+                fileNameElement.textContent = '✓ ' + fileName;
+            } else {
+                fileNameElement.textContent = '';
+            }
+        });
+
+        document.getElementById('panFile').addEventListener('change', function(e) {
+            const fileName = e.target.files[0]?.name;
+            const fileNameElement = document.getElementById('panFileName');
+            if (fileName) {
+                fileNameElement.textContent = '✓ ' + fileName;
+            } else {
+                fileNameElement.textContent = '';
+            }
+        });
+
+        // Aadhar number validation (only digits, 12 characters)
+        document.getElementById('aadharNumber').addEventListener('input', function(e) {
+            this.value = this.value.replace(/\D/g, '');
+        });
+
+        // PAN number validation (alphanumeric, uppercase)
+        document.getElementById('panNumber').addEventListener('input', function(e) {
+            this.value = this.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+        });
+
+        // Form submission
+        document.getElementById('kycForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const aadharNumber = document.getElementById('aadharNumber').value;
+            const panNumber = document.getElementById('panNumber').value;
+            const messageElement = document.getElementById('message');
+            const submitBtn = document.getElementById('submitBtn');
+
+            // Validation
+            if (aadharNumber.length !== 12) {
+                showMessage('Aadhar number must be exactly 12 digits', 'error');
+                return;
+            }
+
+            if (panNumber.length !== 10) {
+                showMessage('PAN number must be exactly 10 characters', 'error');
+                return;
+            }
+
+            // PAN format validation (5 letters, 4 digits, 1 letter)
+            const panPattern = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
+            if (!panPattern.test(panNumber)) {
+                showMessage('Invalid PAN format. Expected format: XXXXX0000X', 'error');
+                return;
+            }
+
+            // Check file sizes
+            const aadharFile = document.getElementById('aadharFile').files[0];
+            const panFile = document.getElementById('panFile').files[0];
+
+            if (aadharFile && aadharFile.size > 5 * 1024 * 1024) {
+                showMessage('Aadhar file size must be less than 5MB', 'error');
+                return;
+            }
+
+            if (panFile && panFile.size > 5 * 1024 * 1024) {
+                showMessage('PAN file size must be less than 5MB', 'error');
+                return;
+            }
+
+            // Submit form
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Submitting...';
+
+            const formData = new FormData();
+            formData.append('aadharNumber', aadharNumber);
+            formData.append('panNumber', panNumber);
+            formData.append('aadharFile', aadharFile);
+            formData.append('panFile', panFile);
+
+            try {
+                const response = await fetch('/submit-kyc', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    showMessage(result.message || 'KYC documents submitted successfully!', 'success');
+                    // Reset form after 2 seconds
+                    setTimeout(() => {
+                        document.getElementById('kycForm').reset();
+                        document.getElementById('aadharFileName').textContent = '';
+                        document.getElementById('panFileName').textContent = '';
+                    }, 2000);
+                } else {
+                    showMessage(result.message || 'Failed to submit KYC documents', 'error');
+                }
+            } catch (error) {
+                showMessage('An error occurred while submitting the form', 'error');
+                console.error('Error:', error);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Submit KYC Documents';
+            }
+        });
+
+        function showMessage(text, type) {
+            const messageElement = document.getElementById('message');
+            messageElement.textContent = text;
+            messageElement.className = 'message ' + type + ' show';
+            
+            // Auto-hide after 5 seconds
+            setTimeout(() => {
+                messageElement.classList.remove('show');
+            }, 5000);
+        }
+    </script>
+</body>
+</html>

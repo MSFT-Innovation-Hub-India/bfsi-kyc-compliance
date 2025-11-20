@@ -1,3 +1,6 @@
 flask
 pyodbc
 python-dotenv
+pytest
+pytest-flask
+pytest-mock
